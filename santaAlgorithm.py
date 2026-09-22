@@ -87,7 +87,7 @@ MAX_SCORE = 0
 
 # When editing, you may permit a higher score than normal to allow the algorithm
 # to work.
-MAX_EDIT_SCORE = 1
+MAX_EDIT_SCORE = 0
 
 participants = {}
 
@@ -248,7 +248,11 @@ def flow_derangement(part_names):
         add_edge(graph, f"{part}_rec", "_SINK_")
         
         for other_part in part_names:
-            if part != other_part and pairing_score(part, other_part) == 0:
+            if part == other_part:
+                continue
+
+            score = pairing_score(part, other_part)
+            if score is not None and score <= MAX_SCORE:
                 add_edge(graph, f"{part}_snd", f"{other_part}_rec")
 
     flow = random_ford_fulkerson(graph, "_SOURCE_", "_SINK_")
@@ -282,6 +286,12 @@ def edit_assignment(old_assign, senders, recipients):
         add_edge(graph, "_SOURCE_", f"{snd}_snd")
         
         for rec in recipients:
+            if snd == rec:
+                continue
+
+            if (snd in old_assign and rec == old_assign[snd]):
+                continue
+
             if snd != rec and \
                     (snd not in old_assign or rec != old_assign[snd]) and \
                     pairing_score(snd, rec) == 0:
@@ -601,6 +611,20 @@ if __name__ == "__main__":
             participants[entry["simple_name"]] = entry
 
     participant_names = list(participants.keys())
+
+    part_set = set(participants.keys())
+    excluded_set = set()
+    for part_name, part in participants.items():
+        for santa in part["prev_santas"].values():
+            for other_part in santa:
+                if other_part not in part_set:
+                    excluded_set.add(other_part)
+
+    if len(excluded_set) != 0:
+        print("The following simple names are not in the participant list. This means they either participated in a past event and are not returning this year, or some data was inserted incorrectly. Check over this list carefully for any inconsistencies.")
+        ls = sorted(list(excluded_set))
+        for name in ls:
+            print(name)
 
     sortedParts = sorted(participant_names)
 
