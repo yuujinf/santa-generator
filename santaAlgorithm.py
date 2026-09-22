@@ -657,7 +657,6 @@ if __name__ == "__main__":
             print_table([
                 ["help", "Print this help screen"],
 
-                ["help", "Print this help screen"],
                 ["load_assign (path)", "Loads the assignment csv file located at the given path"],
                 ["save_assign(path)", "Saves the assignment csv file to the given path"],
                 ["participants", "Print list of participants"],
