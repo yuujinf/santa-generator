@@ -477,6 +477,7 @@ def verify_assign(assign):
 
         sub_score = pairing_score(snd, rec, True)
         if sub_score is None or sub_score > MAX_SCORE:
+            print(f"{snd} should not send a gift to {rec}")
             bad_snds.add(snd)
             bad_recs.add(rec)
 
