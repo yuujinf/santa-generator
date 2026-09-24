@@ -532,7 +532,7 @@ def save_assignment(path, assign):
 def load_assignment(path):
     assign = {}
     recs = set()
-    with open(path, newline='') as file:
+    with open(path, newline='', encoding="utf8") as file:
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
             if row["Sender"] not in participants:
@@ -580,7 +580,7 @@ if __name__ == "__main__":
     parser.add_argument('participant_csv')
     args = parser.parse_args()
 
-    with open(args.participant_csv, newline='') as file:
+    with open(args.participant_csv, newline='', encoding="utf8") as file:
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
             if (MAX_ROWS is not None) and i >= MAX_ROWS:
