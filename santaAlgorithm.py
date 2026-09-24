@@ -515,7 +515,7 @@ def print_assignment(assign):
 
 
 def save_assignment(path, assign):
-    with open(path, 'w', newline='') as file:
+    with open(path, 'w', newline='', encoding="utf8") as file:
         fieldnames = ['Sender', 'Recipient']
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
