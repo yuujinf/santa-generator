@@ -308,10 +308,10 @@ def edit_assignment(old_assign, senders, recipients):
 
     for sender in senders:
         other_part = next(iter(flow[f"{sender}_snd"])).split("_")[0]
-        if sender in old_assign:
-            print(f"reassigning {sender} from {old_assign[sender]} to {other_part}")
-        else:
-            print(f"assigning {sender} to {other_part}")
+        # if sender in old_assign:
+        #     print(f"reassigning {sender} from {old_assign[sender]} to {other_part}")
+        # else:
+        #     print(f"assigning {sender} to {other_part}")
         assign[sender] = other_part
 
     return assign
@@ -344,8 +344,15 @@ def zero_score_edit(old_assign, senders, recipients):
         score = assignment_score(new_assign)
         if score == 0:
             print(f"finished in {attempts} attempts")
+            
+            for snd in senders:
+                rec = new_assign[snd]
+                if snd in old_assign:
+                    print(f"reassigning {snd} from {old_assign[snd]} to {rec}")
+                else:
+                    print(f"assigning {snd} to {rec}")
             return new_assign
-        print("edit failed")
+        # print("edit failed")
 
 
 # Returns whether or not the sender (identified by their simple name)
@@ -780,12 +787,13 @@ if __name__ == "__main__":
             mode = "edit"
             edit_target_snds = set()
             edit_target_recs = set()
+            staging_edit = None
 
         elif mode == "edit" and command[0] == "add":
             if len(command[1:]) == 0:
                 print("Must specify at least one participant")
 
-            staging_edit = set()
+            staging_edit = None
             for part in command[1:]:
                 if part not in participants:
                     print(f"Participant '{part}' not found")
@@ -844,7 +852,7 @@ if __name__ == "__main__":
             if len(command[1:]) == 0:
                 print("Must specify at least one participant")
 
-            staging_edit = set()
+            staging_edit = None
             for part in command[1:]:
                 if part not in participants:
                     print(f"Participant '{part}' not found")
